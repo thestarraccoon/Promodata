@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Reports\ReportType;
+use App\Services\Reports\ReportFactory;
 use Illuminate\Console\Command;
 
 class GeneratePriceReport extends Command
@@ -11,7 +13,7 @@ class GeneratePriceReport extends Command
      *
      * @var string
      */
-    protected $signature = 'reports:prices {category_id} {--extension}';
+    protected $signature = 'reports:prices {category_id}';
 
     /**
      * The console command description.
@@ -25,11 +27,20 @@ class GeneratePriceReport extends Command
      */
     public function handle(): int
     {
-        $start = now()->subDays(7);
-        $end = now();
+        $categoryId = (int) $this->argument('category_id');
 
-        $this->info("Отчет готов {$start} - {$end}");
+        try {
+            $reportData = ReportFactory::create(ReportType::PRICE_EXTREMES_WEEK, $categoryId)->generate();
+            dd($reportData);
 
-        return 0;
+            $this->info("Отчет готов для категории #{$categoryId}");
+
+            return self::SUCCESS;
+
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+
+            return self::FAILURE;
+        }
     }
 }
