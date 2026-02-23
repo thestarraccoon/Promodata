@@ -6,24 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ReportProcess extends Model
 {
-    use HasFactory;
+    protected $table = 'report_process';
+    protected $primaryKey = 'rp_id';
+    public $incrementing = true;
 
-    protected $table = 'report_processes';
     protected $fillable = [
-        'rp_pid',
-        'rp_start_datetime',
-        'rp_exec_time',
-        'ps_id',
-        'rp_file_save_path'
+        'rp_pid', 'rp_start_datetime', 'rp_exec_time', 'ps_id', 'rp_file_save_path'
     ];
 
     protected $casts = [
-        'rp_exec_time' => 'decimal:4',
         'rp_start_datetime' => 'datetime',
+        'rp_exec_time' => 'decimal:4',
     ];
 
-    public function status()
+    public function status(): BelongsTo
     {
-        return $this->belongsTo(ProcessStatus::class, 'ps_id');
+        return $this->belongsTo(ProcessStatus::class, 'ps_id', 'ps_id');
     }
 }

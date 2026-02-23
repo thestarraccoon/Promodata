@@ -14,10 +14,9 @@ class ProductPriceExtremesWeek implements ReportGeneratorInterface
     public function __construct(
         private int                        $categoryId,
         private ?ProductRepository $productRepository = null,
-        private string $ext = FileExtension::CSV
     ) {
         $this->productRepository ??= new ProductRepository();
-        $this->periodStart = now()->subDays(8);
+        $this->periodStart = now()->subDays(7);
         $this->periodEnd = now();
     }
 

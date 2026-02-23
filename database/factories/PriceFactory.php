@@ -18,7 +18,7 @@ class PriceFactory extends Factory
         return [
             'product_id' => Product::inRandomOrder()->first()?->id ?? 1,
             'price' => $this->faker->randomFloat(2, 100, 5000),
-            'price_date' => $this->faker->dateTimeBetween('-60 days', 'now'),
+            'price_date' => $this->faker->dateTimeBetween('-15 days', 'now'),
         ];
     }
 }
