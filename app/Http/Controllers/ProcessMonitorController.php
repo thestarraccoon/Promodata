@@ -11,15 +11,8 @@ class ProcessMonitorController extends Controller
     {
         $processes = ReportProcess::with('status')
             ->orderBy('rp_start_datetime', 'desc')
-            ->paginate(20);
+            ->paginate(10);
 
-        $stats = [
-            'completed' => ReportProcess::whereHas('status', fn($q) => $q->where('ps_name', 'completed'))->count(),
-            'failed' => ReportProcess::whereHas('status', fn($q) => $q->where('ps_name', 'failed'))->count(),
-            'running' => ReportProcess::whereHas('status', fn($q) => $q->where('ps_name', 'running'))->count(),
-            'total' => ReportProcess::count(),
-        ];
-
-        return view('processes.monitor', compact('processes', 'stats'));
+        return view('processes.monitor', compact('processes'));
     }
 }

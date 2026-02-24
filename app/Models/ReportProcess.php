@@ -1,8 +1,10 @@
 <?php
 namespace App\Models;
 
+use App\Enums\ProcessStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class ReportProcess extends Model
 {
@@ -22,5 +24,18 @@ class ReportProcess extends Model
     public function status()
     {
         return $this->belongsTo(ProcessStatus::class, 'ps_id', 'ps_id');
+    }
+
+    public function getDownloadUrlAttribute(): ?string
+    {
+        if (!$this->rp_file_save_path || !$this->isCompleted()) {
+            return null;
+        }
+        return Storage::disk('public')->url($this->rp_file_save_path);
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->status->ps_name === ProcessStatuses::COMPLETED;
     }
 }

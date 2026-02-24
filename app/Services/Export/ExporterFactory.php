@@ -11,6 +11,7 @@ class ExporterFactory
     {
         return match (strtolower($format)) {
             'csv' => new CsvExporter(),
+
             default => throw new InvalidArgumentException("Формат '{$format}' не поддерживается")
         };
     }

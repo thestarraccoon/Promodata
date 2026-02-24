@@ -11,7 +11,7 @@ class ReportProcessLogger
 {
     private ReportProcess $process;
 
-    public function start()
+    public function start(): void
     {
         $this->process = ReportProcess::create([
             'rp_pid' => getmypid() ?: 0,
@@ -19,11 +19,9 @@ class ReportProcessLogger
             'ps_id' => ProcessStatus::where('ps_name', ProcessStatuses::RUNNING)->first()->ps_id,
             'rp_exec_time' => 0,
         ]);
-
-        Log::info('Отчёт запущен', ['rp_id' => $this->process->rp_id]);
     }
 
-    public function success(string $filePath)
+    public function success(string $filePath): void
     {
         $time = now()->diffInSeconds($this->process->rp_start_datetime);
 
@@ -32,15 +30,9 @@ class ReportProcessLogger
             'rp_exec_time' => $time,
             'rp_file_save_path' => $filePath,
         ]);
-
-        Log::info('Отчёт завершён успешно', [
-            'rp_id' => $this->process->rp_id,
-            'file' => $filePath,
-            'time_sec' => $time
-        ]);
     }
 
-    public function error(string $message)
+    public function error(string $message): void
     {
         $time = now()->diffInSeconds($this->process->rp_start_datetime);
 

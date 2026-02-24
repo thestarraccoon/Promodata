@@ -5,7 +5,6 @@ namespace App\Repositories;
 use DateTimeInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-
 class ProductRepository
 {
     public function getProductPricesExtremum(
@@ -55,6 +54,6 @@ class ProductRepository
                 pr.price_date
             ')
             ->orderBy('p.id')
-            ->orderBy('pr.price_date');
+            ->orderBy('pr.price','desc');
     }
 }

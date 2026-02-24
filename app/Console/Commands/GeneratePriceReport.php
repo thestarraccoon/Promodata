@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\FileExtension;
 use App\Enums\Reports\ReportType;
 use App\Services\Export\ExporterFactory;
 use App\Services\Reports\Logger\ReportProcessLogger;
 use App\Services\Reports\ReportFactory;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 
 class GeneratePriceReport extends Command
 {
@@ -31,7 +31,7 @@ class GeneratePriceReport extends Command
     public function handle(): int
     {
         $categoryId = (int) $this->argument('category_id');
-        $format = $this->option('format') ?: 'csv';
+        $format = $this->option('format') ?: FileExtension::CSV;
 
         $logger = new ReportProcessLogger();
         $logger->start();
@@ -41,7 +41,6 @@ class GeneratePriceReport extends Command
 
             if (empty($reportData)) {
                 $this->error("Нет данных для категории #{$categoryId}");
-                $logger->error("Нет данных для категории #{$categoryId}");
                 return self::FAILURE;
             }
 

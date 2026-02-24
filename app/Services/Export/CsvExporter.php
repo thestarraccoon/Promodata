@@ -14,14 +14,14 @@ class CsvExporter implements ExporterInterface
     {
         $path = "reports/{$filename}.{$this->extension}";
 
-        $absolutePath = Storage::path($path);
+        Storage::disk('public')->put($path, $this->generateCsv($data, $headers));
 
-        $directory = dirname($absolutePath);
-        if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true);
-        }
+        return $path;
+    }
 
-        $handle = fopen($absolutePath, 'w');
+    private function generateCsv(array $data, array $headers): string
+    {
+        $handle = fopen('php://temp', 'r+');
 
         if (!empty($headers)) {
             fputcsv($handle, $headers);
@@ -31,8 +31,12 @@ class CsvExporter implements ExporterInterface
             fputcsv($handle, (array) $row);
         }
 
+        rewind($handle);
+
+        $csv = stream_get_contents($handle);
+
         fclose($handle);
 
-        return $absolutePath;
+        return $csv;
     }
 }
