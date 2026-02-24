@@ -19,7 +19,7 @@ class ReportProcess extends Model
         'rp_exec_time' => 'decimal:4',
     ];
 
-    public function status(): BelongsTo
+    public function status()
     {
         return $this->belongsTo(ProcessStatus::class, 'ps_id', 'ps_id');
     }

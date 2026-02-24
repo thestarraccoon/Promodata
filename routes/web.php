@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/processes', [App\Http\Controllers\ProcessMonitorController::class, 'index'])
+    ->name('processes.index');
+
