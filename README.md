@@ -5,6 +5,10 @@
 git clone https://github.com/thestarraccoon/Promodata.git
 cd Promodata
 ```
+## 1.1 Зависимости PHP (опционально, если при шаге 2 есть ошибки)
+```bash
+sudo apt install php8.2 php8.2-cli php8.2-common php8.2-pgsql php8.2-intl php8.2-mbstring php8.2-xml php8.2-curl php8.2-zip php8.2-bcmath php8.2-gd composer postgresql postgresql-contrib
+```
 
 ## 2. Зависимости
 ```bash
@@ -36,7 +40,6 @@ php artisan migrate:fresh --seed
 ## 6. Настройка Storage
 ```bash
 php artisan storage:link
-chmod -R 775 storage bootstrap/cache
 ```
 
 ## 7. Запуск сервера
